@@ -51,7 +51,7 @@ const RegisterPage = (props) => {
                 name='firstName'
                 variant='outlined'
                 label='First Name'
-                autoComplete='fname'
+                autoComplete='given-name'
                 fullWidth
                 required
                 autoFocus
@@ -63,7 +63,7 @@ const RegisterPage = (props) => {
                 name='lastName'
                 variant='outlined'
                 label='Last Name'
-                autoComplete='lname'
+                autoComplete='family-name'
                 fullWidth
                 required
               />
@@ -85,7 +85,19 @@ const RegisterPage = (props) => {
                 name='password'
                 variant='outlined'
                 label='Password'
-                autoComplete='current-password'
+                autoComplete='new-password'
+                type='password'
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id='rePassword'
+                name='rePassword'
+                variant='outlined'
+                label='Re-enter Password'
+                autoComplete='new-password'
                 type='password'
                 fullWidth
                 required
