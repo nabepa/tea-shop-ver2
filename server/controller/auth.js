@@ -5,7 +5,7 @@ import * as userRepository from '../data/auth.js';
 import { config } from '../config.js';
 
 export async function register(req, res) {
-  const { email, password, name, image } = req.body;
+  const { email, password, firstName, lastName } = req.body;
   const found = await userRepository.findByEmail(email);
   if (found) {
     return res.status(409).json({ message: `${email} already exists` });
@@ -14,8 +14,8 @@ export async function register(req, res) {
   const userId = await userRepository.createUser({
     email,
     password: hashed,
-    name,
-    image,
+    firstName,
+    lastName,
   });
   const token = await createJwtToken(userId);
   res.status(201).json({ token });

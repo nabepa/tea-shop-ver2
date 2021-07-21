@@ -20,7 +20,11 @@ export const User = sequelize.define(
       type: DataTypes.STRING(128),
       allowNull: false,
     },
-    name: {
+    firstName: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+    },
+    lastName: {
       type: DataTypes.STRING(128),
       allowNull: false,
     },
@@ -28,7 +32,6 @@ export const User = sequelize.define(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    image: DataTypes.TEXT,
   },
   { timestamps: false }
 );
