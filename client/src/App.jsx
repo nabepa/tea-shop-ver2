@@ -1,5 +1,5 @@
 import './App.css';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LandingPage from './components/LandingPage/LandingPage';
 import SigninPage from './components/SigninPage/SigninPage';
@@ -7,8 +7,6 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import CopyRight from './components/CopyRight/CopyRight';
 
 function App() {
-  const history = useHistory();
-
   return (
     <>
       <CssBaseline />

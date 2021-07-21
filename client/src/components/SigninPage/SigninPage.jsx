@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { useForm } from 'react-hook-form';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,11 +31,21 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
 }));
 
 export default function SignIn() {
   const history = useHistory();
   const classes = useStyles();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -45,7 +56,11 @@ export default function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <TextField
             id='email'
             name='email'
@@ -56,7 +71,15 @@ export default function SignIn() {
             fullWidth
             required
             autoFocus
+            {...register('email', {
+              required: 'This field is required.',
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: 'Please write your email.',
+              },
+            })}
           />
+          <p className={classes.alert}>{errors.email?.message}</p>
           <TextField
             id='password'
             name='password'
@@ -67,7 +90,9 @@ export default function SignIn() {
             type='password'
             fullWidth
             required
+            {...register('password', { required: 'This field is required.' })}
           />
+          <p className={classes.alert}>{errors.password?.message}</p>
           <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}
             label='Remember me'
