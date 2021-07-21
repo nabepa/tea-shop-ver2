@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useForm } from 'react-hook-form';
+import { emailRegExp, passwordRegExp } from '../../util/regexp';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   alert: {
     color: 'red',
-    fontWeight: 'bold',
   },
 }));
 
@@ -74,7 +74,7 @@ export default function SignIn() {
             {...register('email', {
               required: 'This field is required.',
               pattern: {
-                value: /^\S+@\S+$/i,
+                value: emailRegExp,
                 message: 'Please write your email.',
               },
             })}
@@ -90,7 +90,14 @@ export default function SignIn() {
             type='password'
             fullWidth
             required
-            {...register('password', { required: 'This field is required.' })}
+            {...register('password', {
+              required: 'This field is required.',
+              pattern: {
+                value: passwordRegExp,
+                message:
+                  'Password should be at least 6 and no more than 14 characters.',
+              },
+            })}
           />
           <p className={classes.alert}>{errors.password?.message}</p>
           <FormControlLabel
