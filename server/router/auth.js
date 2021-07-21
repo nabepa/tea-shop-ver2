@@ -11,8 +11,10 @@ const validateCredential = [
   body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
   body('password')
     .trim()
-    .isLength({ min: 5 })
-    .withMessage('Password should be at least 5 characters'),
+    .isLength({ min: 6, max: 14 })
+    .withMessage(
+      'Password should be at least 6 but no more than 14 characters'
+    ),
   validate,
 ];
 
