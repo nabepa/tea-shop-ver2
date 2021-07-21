@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     color: 'red',
   },
+  link: {
+    cursor: 'pointer',
+  },
 }));
 
 export default function SignIn() {
@@ -122,10 +125,11 @@ export default function SignIn() {
             </Grid> */}
             <Grid item>
               <Link
+                className={classes.link}
+                variant='body2'
                 onClick={() => {
                   history.push('/register');
                 }}
-                variant='body2'
               >
                 {"Don't have an account? Register"}
               </Link>

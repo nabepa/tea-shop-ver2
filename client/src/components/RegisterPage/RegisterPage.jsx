@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     color: 'red',
   },
+  link: {
+    cursor: 'pointer',
+  },
 }));
 
 const RegisterPage = (props) => {
@@ -46,7 +49,10 @@ const RegisterPage = (props) => {
   } = useForm();
   const passwordRef = useRef();
   passwordRef.current = watch('password');
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    history.push('/');
+  };
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -166,10 +172,11 @@ const RegisterPage = (props) => {
           <Grid container justifyContent='flex-end'>
             <Grid item>
               <Link
+                className={classes.link}
+                variant='body2'
                 onClick={() => {
                   history.push('/signin');
                 }}
-                variant='body2'
               >
                 Already have an account? Sign in
               </Link>
