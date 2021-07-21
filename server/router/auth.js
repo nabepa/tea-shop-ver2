@@ -18,11 +18,8 @@ const validateCredential = [
 
 const validateRegister = [
   ...validateCredential,
-  body('name').notEmpty().withMessage('Name is missing'),
-  body('url')
-    .isURL()
-    .withMessage('Invalid URL')
-    .optional({ nullable: true, checkFalsy: true }),
+  body('firstName').trim().notEmpty().withMessage('First name is missing'),
+  body('lastName').trim().notEmpty().withMessage('Last name is missing'),
   validate,
 ];
 
