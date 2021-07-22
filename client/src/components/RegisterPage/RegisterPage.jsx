@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   makeStyles,
@@ -35,12 +35,14 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    color: theme.palette.primary.contrastText,
   },
   alert: {
     color: theme.palette.error.dark,
   },
   link: {
     cursor: 'pointer',
+    color: theme.palette.success.dark,
   },
 }));
 
@@ -50,7 +52,7 @@ const theme = createTheme({
   },
 });
 
-const RegisterPage = ({ onRegister }) => {
+const RegisterPage = ({ user, onRegister }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -77,6 +79,10 @@ const RegisterPage = ({ onRegister }) => {
       .then(() => history.push('/'))
       .catch(setErr);
   };
+
+  useEffect(() => {
+    user && history.push('/');
+  }, [user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -224,11 +230,11 @@ const RegisterPage = ({ onRegister }) => {
               </Grid>
             </Grid>
             <Button
+              className={classes.submit}
               type='submit'
               fullWidth
               variant='contained'
               color='primary'
-              className={classes.submit}
             >
               Register
             </Button>

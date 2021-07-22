@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   makeStyles,
@@ -37,12 +37,14 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    color: theme.palette.primary.contrastText,
   },
   alert: {
     color: theme.palette.error.dark,
   },
   link: {
     cursor: 'pointer',
+    color: theme.palette.success.dark,
   },
 }));
 
@@ -52,7 +54,7 @@ const theme = createTheme({
   },
 });
 
-const SigninPage = ({ onSignin }) => {
+const SigninPage = ({ user, onSignin }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -76,6 +78,10 @@ const SigninPage = ({ onSignin }) => {
       .then(() => history.push('/'))
       .catch(setErr);
   };
+
+  useEffect(() => {
+    user && history.push('/');
+  }, [user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -148,11 +154,11 @@ const SigninPage = ({ onSignin }) => {
               label='Remember me'
             />
             <Button
+              className={classes.submit}
               type='submit'
               fullWidth
               variant='contained'
               color='primary'
-              className={classes.submit}
             >
               Sign In
             </Button>
