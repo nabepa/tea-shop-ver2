@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  createTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -13,6 +18,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useForm } from 'react-hook-form';
 import { emailRegExp, passwordRegExp } from '../../util/regexp';
+import PopupMessage from '../PopupMessage/PopupMessage';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.success.main,
   },
   form: {
     width: '100%',
@@ -33,14 +39,20 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   alert: {
-    color: 'red',
+    color: theme.palette.error.dark,
   },
   link: {
     cursor: 'pointer',
   },
 }));
 
-export default function SignIn() {
+const theme = createTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+const SigninPage = ({ onSignin }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -48,95 +60,131 @@ export default function SignIn() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [errMessage, setErrMessage] = useState('');
+
+  const setErr = (err) => {
+    setErrMessage(err.toString());
+  };
+
+  const closePopup = () => {
+    setErrMessage('');
+  };
+
+  const onSubmit = (data) => {
+    const { email, password } = data;
+    onSignin(email, password)
+      .then(() => history.push('/'))
+      .catch(setErr);
+  };
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          Sign in
-        </Typography>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
-          <TextField
-            id='email'
-            name='email'
-            variant='outlined'
-            label='Email Address'
-            autoComplete='email'
-            margin='normal'
-            fullWidth
-            required
-            autoFocus
-            {...register('email', {
-              required: 'This field is required.',
-              pattern: {
-                value: emailRegExp,
-                message: 'Please write your email.',
-              },
-            })}
-          />
-          <p className={classes.alert}>{errors.email?.message}</p>
-          <TextField
-            id='password'
-            name='password'
-            variant='outlined'
-            label='Password'
-            autoComplete='current-password'
-            margin='normal'
-            type='password'
-            fullWidth
-            required
-            {...register('password', {
-              required: 'This field is required.',
-              pattern: {
-                value: passwordRegExp,
-                message:
-                  'Password should be at least 6 and no more than 14 characters.',
-              },
-            })}
-          />
-          <p className={classes.alert}>{errors.password?.message}</p>
-          <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
+    <ThemeProvider theme={theme}>
+      <Container component='main' maxWidth='xs'>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            Sign in
+          </Typography>
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
           >
-            Sign In
-          </Button>
-          <Grid container justifyContent='flex-end'>
-            {/* Todo: Implement below */}
-            {/* <Grid item xs>
+            <TextField
+              id='email'
+              name='email'
+              variant='outlined'
+              label='Email Address'
+              autoComplete='email'
+              margin='normal'
+              fullWidth
+              required
+              autoFocus
+              {...register('email', {
+                required: 'This field is required.',
+                pattern: {
+                  value: emailRegExp,
+                  message: 'Please write your email.',
+                },
+              })}
+            />
+            <Typography
+              className={classes.alert}
+              component='p'
+              variant='caption'
+            >
+              {errors.email?.message}
+            </Typography>
+            <TextField
+              id='password'
+              name='password'
+              variant='outlined'
+              label='Password'
+              autoComplete='current-password'
+              margin='normal'
+              type='password'
+              fullWidth
+              required
+              {...register('password', {
+                required: 'This field is required.',
+                pattern: {
+                  value: passwordRegExp,
+                  message:
+                    'Password should be at least 6 and no more than 14 characters.',
+                },
+              })}
+            />
+            <Typography
+              component='p'
+              variant='caption'
+              className={classes.alert}
+            >
+              {errors.password?.message}
+            </Typography>
+            <FormControlLabel
+              control={<Checkbox value='remember' color='primary' />}
+              label='Remember me'
+            />
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <PopupMessage
+              text={errMessage}
+              isOpen={!!errMessage}
+              onClose={closePopup}
+            />
+            <Grid container justifyContent='flex-end'>
+              {/* Todo: Implement below */}
+              {/* <Grid item xs>
               <Link variant='body2'>
                 Forgot password?
               </Link>
             </Grid> */}
-            <Grid item>
-              <Link
-                className={classes.link}
-                variant='body2'
-                onClick={() => {
-                  history.push('/register');
-                }}
-              >
-                {"Don't have an account? Register"}
-              </Link>
+              <Grid item>
+                <Link
+                  className={classes.link}
+                  variant='body2'
+                  onClick={() => {
+                    history.push('/register');
+                  }}
+                >
+                  {"Don't have an account? Register."}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+    </ThemeProvider>
   );
-}
+};
+
+export default SigninPage;

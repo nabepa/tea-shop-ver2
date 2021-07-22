@@ -1,6 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  createTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,7 +15,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import { useForm } from 'react-hook-form';
-import { emailRegExp, passwordRegExp } from '../../util/regexp';
+import { emailRegExp, letterRegExp, passwordRegExp } from '../../util/regexp';
+import PopupMessage from '../PopupMessage/PopupMessage';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: 'green',
+    backgroundColor: theme.palette.success.main,
   },
   form: {
     width: '100%',
@@ -31,14 +37,20 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   alert: {
-    color: 'red',
+    color: theme.palette.error.dark,
   },
   link: {
     cursor: 'pointer',
   },
 }));
 
-const RegisterPage = (props) => {
+const theme = createTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+const RegisterPage = ({ onRegister }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -49,142 +61,199 @@ const RegisterPage = (props) => {
   } = useForm();
   const passwordRef = useRef();
   passwordRef.current = watch('password');
+  const [errMessage, setErrMessage] = useState('');
+
+  const setErr = (err) => {
+    setErrMessage(err.toString());
+  };
+
+  const closePopup = () => {
+    setErrMessage('');
+  };
+
   const onSubmit = (data) => {
-    console.log(data);
-    history.push('/');
+    const { firstName, lastName, email, password } = data;
+    onRegister(firstName, lastName, email, password)
+      .then(() => history.push('/'))
+      .catch(setErr);
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AssignmentIndOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          REGISTER
-        </Typography>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id='firstName'
-                name='firstName'
-                variant='outlined'
-                label='First Name'
-                autoComplete='given-name'
-                fullWidth
-                required
-                autoFocus
-                {...register('firstName', {
-                  required: 'This field is required.',
-                })}
-              />
-              <p className={classes.alert}>{errors.firstName?.message}</p>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id='lastName'
-                name='lastName'
-                variant='outlined'
-                label='Last Name'
-                autoComplete='family-name'
-                fullWidth
-                required
-                {...register('lastName', {
-                  required: 'This field is required.',
-                })}
-              />
-              <p className={classes.alert}>{errors.firstName?.message}</p>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id='email'
-                name='email'
-                variant='outlined'
-                label='Email Address'
-                autoComplete='email'
-                fullWidth
-                required
-                {...register('email', {
-                  required: 'This field is required.',
-                  pattern: {
-                    value: emailRegExp,
-                    message: 'Please write your email.',
-                  },
-                })}
-              />
-              <p className={classes.alert}>{errors.email?.message}</p>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id='password'
-                name='password'
-                variant='outlined'
-                label='Password'
-                autoComplete='new-password'
-                type='password'
-                fullWidth
-                required
-                {...register('password', {
-                  required: 'This field is required.',
-                  pattern: {
-                    value: passwordRegExp,
-                    message:
-                      'Password should be at least 6 and no more than 14 characters.',
-                  },
-                })}
-              />
-              <p className={classes.alert}>{errors.password?.message}</p>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id='rePassword'
-                name='rePassword'
-                variant='outlined'
-                label='Re-enter Password'
-                autoComplete='new-password'
-                type='password'
-                fullWidth
-                required
-                {...register('rePassword', {
-                  required: true,
-                  validate: (value) => value === passwordRef.current,
-                })}
-              />
-              {errors.rePassword && (
-                <p className={classes.alert}>The password do not match.</p>
-              )}
-            </Grid>
-          </Grid>
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
+    <ThemeProvider theme={theme}>
+      <Container component='main' maxWidth='xs'>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <AssignmentIndOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            Register our site
+          </Typography>
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
           >
-            Register
-          </Button>
-          <Grid container justifyContent='flex-end'>
-            <Grid item>
-              <Link
-                className={classes.link}
-                variant='body2'
-                onClick={() => {
-                  history.push('/signin');
-                }}
-              >
-                Already have an account? Sign in
-              </Link>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id='firstName'
+                  name='firstName'
+                  variant='outlined'
+                  label='First Name'
+                  autoComplete='given-name'
+                  fullWidth
+                  required
+                  autoFocus
+                  {...register('firstName', {
+                    required: 'This field is required.',
+                    pattern: {
+                      value: letterRegExp,
+                      message: 'Only alphabets is allowed.',
+                    },
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.firstName?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id='lastName'
+                  name='lastName'
+                  variant='outlined'
+                  label='Last Name'
+                  autoComplete='family-name'
+                  fullWidth
+                  required
+                  {...register('lastName', {
+                    required: 'This field is required.',
+                    pattern: {
+                      value: letterRegExp,
+                      message: 'Only alphabets is allowed',
+                    },
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.lastName?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id='email'
+                  name='email'
+                  variant='outlined'
+                  label='Email Address'
+                  autoComplete='email'
+                  fullWidth
+                  required
+                  {...register('email', {
+                    required: 'This field is required.',
+                    pattern: {
+                      value: emailRegExp,
+                      message: 'Please write your email.',
+                    },
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.email?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id='password'
+                  name='password'
+                  variant='outlined'
+                  label='Password(6-14 characters)'
+                  autoComplete='new-password'
+                  type='password'
+                  fullWidth
+                  required
+                  {...register('password', {
+                    required: 'This field is required.',
+                    pattern: {
+                      value: passwordRegExp,
+                      message:
+                        'Password should be at least 6 and no more than 14 characters.',
+                    },
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.password?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id='rePassword'
+                  name='rePassword'
+                  variant='outlined'
+                  label='Re-enter Password(6-14 characters)'
+                  autoComplete='new-password'
+                  type='password'
+                  fullWidth
+                  required
+                  {...register('rePassword', {
+                    required: true,
+                    validate: (value) => value === passwordRef.current,
+                  })}
+                />
+                {errors.rePassword && (
+                  <Typography
+                    className={classes.alert}
+                    component='p'
+                    variant='caption'
+                  >
+                    The password does not match.
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Register
+            </Button>
+            <PopupMessage
+              text={errMessage}
+              isOpen={!!errMessage}
+              onClose={closePopup}
+            />
+            <Grid container justifyContent='flex-end'>
+              <Grid item>
+                <Link
+                  className={classes.link}
+                  variant='body2'
+                  onClick={() => {
+                    history.push('/signin');
+                  }}
+                >
+                  Already have an account? Sign in.
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Container>
+    </ThemeProvider>
   );
 };
 
