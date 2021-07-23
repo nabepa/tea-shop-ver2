@@ -80,7 +80,7 @@ const SigninPage = ({ user, onSignin }) => {
   };
 
   useEffect(() => {
-    user && history.push('/');
+    user && history.goBack();
   }, [user, history]);
 
   return (

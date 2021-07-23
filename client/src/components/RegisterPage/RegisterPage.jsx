@@ -81,7 +81,7 @@ const RegisterPage = ({ user, onRegister }) => {
   };
 
   useEffect(() => {
-    user && history.push('/');
+    user && history.goBack();
   }, [user, history]);
 
   return (

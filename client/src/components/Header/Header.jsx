@@ -52,19 +52,35 @@ const Header = ({ sections, title, user, signout }) => {
           {title}
         </Typography>
 
-        {user ? (
-          <Button
-            className={classes.btn}
-            variant='outlined'
-            size='small'
-            onClick={() => {
-              signout();
-            }}
-          >
-            Sign Out
-          </Button>
-        ) : (
-          <div>
+        <div>
+          {/* Admin */}
+          {user && user.role ? (
+            <Button
+              className={classes.btn}
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                history.push('/product/upload');
+              }}
+            >
+              Upload
+            </Button>
+          ) : null}
+          {/* Signed User */}
+          {user && (
+            <Button
+              className={classes.btn}
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                signout();
+              }}
+            >
+              Sign Out
+            </Button>
+          )}
+          {/* Unsigned User */}
+          {!user && (
             <Button
               className={classes.btn}
               variant='outlined'
@@ -75,6 +91,8 @@ const Header = ({ sections, title, user, signout }) => {
             >
               Sign In
             </Button>
+          )}
+          {!user && (
             <Button
               className={classes.btn}
               variant='outlined'
@@ -85,12 +103,8 @@ const Header = ({ sections, title, user, signout }) => {
             >
               Register
             </Button>
-            {/* Todo: Search */}
-            {/* <IconButton className={classes.btn}>
-              <SearchIcon />
-            </IconButton> */}
-          </div>
-        )}
+          )}
+        </div>
       </Toolbar>
       <Toolbar
         className={classes.toolbarSecondary}

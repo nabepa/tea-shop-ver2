@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import LandingPage from './components/LandingPage/LandingPage';
 import SigninPage from './components/SigninPage/SigninPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
+import UploaderPage from './components/UploadPage/UploaderPage';
 import CopyRight from './components/CopyRight/CopyRight';
 import { useAuth } from './context/AuthContext';
 import Header from './components/Header/Header';
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route exact path='/register'>
             <RegisterPage user={user} onRegister={register} />
+          </Route>
+          <Route exact path='/product/upload'>
+            <UploaderPage user={user} />
           </Route>
         </Switch>
       </div>
