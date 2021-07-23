@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   toolbarLink: {
     padding: theme.spacing(1),
     flexShrink: 0,
+    cursor: 'pointer',
   },
 }));
 
@@ -35,12 +36,12 @@ const Header = ({ sections, title, user, signout }) => {
   return (
     <>
       <Toolbar className={classes.toolbar}>
-        <IconButton>
-          <ArrowBackIcon
-            onClick={() => {
-              history.goBack();
-            }}
-          />
+        <IconButton
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <ArrowBackIcon />
         </IconButton>
         <Typography
           className={classes.toolbarTitle}
