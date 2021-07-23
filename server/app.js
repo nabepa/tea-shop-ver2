@@ -3,9 +3,10 @@ import 'express-async-errors';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import authRouter from './router/auth.js';
+import productRouter from './router/product.js';
 import { config } from './config.js';
 import { sequelize } from './db/database.js';
-import authRouter from './router/auth.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors(corsOption));
 app.use(morgan('tiny'));
 
 app.use('/auth', authRouter);
+app.use('/product', productRouter);
 
 app.use((req, res, next) => {
   res.sendStatus(404);

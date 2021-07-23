@@ -18,7 +18,7 @@ export async function register(req, res) {
     lastName,
   });
   const token = await createJwtToken(userId);
-  res.status(201).json({ token });
+  res.status(201).json({ token, email, role: 0 });
 }
 
 export async function signin(req, res) {
@@ -32,7 +32,7 @@ export async function signin(req, res) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
   const token = createJwtToken(found.id);
-  res.status(200).json({ token });
+  res.status(200).json({ token, email, role: found.role });
 }
 
 function createJwtToken(id) {
