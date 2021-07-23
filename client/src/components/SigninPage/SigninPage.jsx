@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  makeStyles,
-  createTheme,
-  ThemeProvider,
-} from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { greenTheme } from '../../style/myTheme';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -48,12 +44,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const theme = createTheme({
-  palette: {
-    primary: green,
-  },
-});
-
 const SigninPage = ({ user, onSignin }) => {
   const history = useHistory();
   const classes = useStyles();
@@ -84,7 +74,7 @@ const SigninPage = ({ user, onSignin }) => {
   }, [user, history]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={greenTheme}>
       <Container component='main' maxWidth='xs'>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>

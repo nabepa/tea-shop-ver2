@@ -10,15 +10,9 @@ import { useAuth } from './context/AuthContext';
 import Header from './components/Header/Header';
 
 const sections = [
-  { title: 'page1', path: 'page1' },
-  { title: 'page2', path: 'page2' },
-  { title: 'page3', path: 'page3' },
-  { title: 'page4', path: 'page4' },
-  { title: 'page5', path: 'page5' },
-  { title: 'page6', path: 'page6' },
-  { title: 'page7', path: 'page7' },
-  { title: 'page8', path: 'page8' },
-  { title: 'page9', path: 'page9' },
+  { title: 'GREEN', path: '/product/green' },
+  { title: 'ROOIBOS', path: '/product/rooibos' },
+  { title: 'HERBAL', path: '/product/herbal' },
 ];
 
 function App() {
