@@ -82,7 +82,7 @@ const RegisterPage = ({ user, onRegister }) => {
 
   useEffect(() => {
     user && history.push('/');
-  }, [user]);
+  }, [user, history]);
 
   return (
     <ThemeProvider theme={theme}>

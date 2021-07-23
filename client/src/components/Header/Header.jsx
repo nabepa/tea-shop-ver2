@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -12,10 +11,10 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
+    justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   toolbarTitle: {
-    flex: 1,
     cursor: 'pointer',
   },
   toolbarSecondary: {
@@ -27,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     cursor: 'pointer',
   },
+  btn: {
+    margin: '0.1rem',
+  },
 }));
 
 const Header = ({ sections, title, user, signout }) => {
@@ -36,13 +38,6 @@ const Header = ({ sections, title, user, signout }) => {
   return (
     <>
       <Toolbar className={classes.toolbar}>
-        <IconButton
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
         <Typography
           className={classes.toolbarTitle}
           component='h2'
@@ -56,11 +51,10 @@ const Header = ({ sections, title, user, signout }) => {
         >
           {title}
         </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
+
         {user ? (
           <Button
+            className={classes.btn}
             variant='outlined'
             size='small'
             onClick={() => {
@@ -70,15 +64,32 @@ const Header = ({ sections, title, user, signout }) => {
             Sign Out
           </Button>
         ) : (
-          <Button
-            variant='outlined'
-            size='small'
-            onClick={() => {
-              history.push('/signin');
-            }}
-          >
-            Sign In
-          </Button>
+          <div>
+            <Button
+              className={classes.btn}
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                history.push('/signin');
+              }}
+            >
+              Sign In
+            </Button>
+            <Button
+              className={classes.btn}
+              variant='outlined'
+              size='small'
+              onClick={() => {
+                history.push('/register');
+              }}
+            >
+              Register
+            </Button>
+            {/* Todo: Search */}
+            {/* <IconButton className={classes.btn}>
+              <SearchIcon />
+            </IconButton> */}
+          </div>
         )}
       </Toolbar>
       <Toolbar
@@ -86,6 +97,13 @@ const Header = ({ sections, title, user, signout }) => {
         component='nav'
         variant='dense'
       >
+        <IconButton
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         {sections.map((section) => (
           <Link
             className={classes.toolbarLink}

@@ -28,7 +28,7 @@ function App() {
       <CssBaseline />
       <div className='app'>
         <Header
-          title='Blog'
+          title='TEA SHOP'
           sections={sections}
           user={user}
           signout={signout}

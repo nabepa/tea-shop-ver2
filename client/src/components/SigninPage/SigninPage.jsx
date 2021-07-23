@@ -81,7 +81,7 @@ const SigninPage = ({ user, onSignin }) => {
 
   useEffect(() => {
     user && history.push('/');
-  }, [user]);
+  }, [user, history]);
 
   return (
     <ThemeProvider theme={theme}>
