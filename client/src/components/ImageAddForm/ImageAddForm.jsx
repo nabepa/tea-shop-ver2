@@ -46,6 +46,7 @@ const ImageAddForm = memo(({ imageUploader, url, changeFile }) => {
                 width: '50%',
                 objectFit: 'contain',
               }}
+              alt='product'
             />
           ) : (
             <AddPhotoAlternateOutlinedIcon fontSize='large' />

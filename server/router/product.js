@@ -30,7 +30,7 @@ const validateProduct = [
     .withMessage('Description is missing.'),
   body('image') //
     .isURL()
-    .withMessage('Invalid URL.'),
+    .withMessage('Invalid Image URL.'),
   validate,
 ];
 

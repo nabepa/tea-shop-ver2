@@ -65,7 +65,7 @@ const UploaderPage = ({ ImageAdd, productService, user }) => {
   const onSubmit = async (data) => {
     const { category, name, price, stock, description } = data;
     productService
-      .postProduct(category, name, price, stock, description)
+      .postProduct(category, name, price, stock, description, file.fileURL)
       .then(() => {
         alert('success!');
         history.push('/');
@@ -82,30 +82,30 @@ const UploaderPage = ({ ImageAdd, productService, user }) => {
   return (
     <ThemeProvider theme={greenTheme}>
       <Container component='main' maxWidth='md'>
-        <Grid container spacing={3}>
-          <Grid
-            item
-            container
-            xs={12}
-            sm={6}
-            justifyContent='center'
-            alignItems='center'
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <CloudUploadIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            Upload New Product
+          </Typography>
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
           >
-            <ImageAdd url={file.fileURL} changeFile={changeFile} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <CloudUploadIcon />
-              </Avatar>
-              <Typography component='h1' variant='h5'>
-                Upload New Product
-              </Typography>
-              <form
-                className={classes.form}
-                onSubmit={handleSubmit(onSubmit)}
-                noValidate
+            <Grid container spacing={3}>
+              <Grid
+                item
+                container
+                xs={12}
+                sm={6}
+                justifyContent='center'
+                alignItems='center'
               >
+                <ImageAdd url={file.fileURL} changeFile={changeFile} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   id='name'
                   name='name'
@@ -240,10 +240,10 @@ const UploaderPage = ({ ImageAdd, productService, user }) => {
                   isOpen={!!errMessage}
                   onClose={closePopup}
                 />
-              </form>
-            </div>
-          </Grid>
-        </Grid>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
       </Container>
     </ThemeProvider>
   );

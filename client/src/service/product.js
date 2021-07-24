@@ -12,19 +12,41 @@ export default class ProductService {
     });
   }
 
-  async postProduct(category, name, price, stock, description) {
+  async postProduct(category, name, price, stock, description, image) {
     return this.http.fetch(`/product`, {
       method: 'POST',
       headers: this.getHeaders(),
-      body: JSON.stringify({ category, name, price, stock, description }),
+      body: JSON.stringify({
+        category,
+        name,
+        price,
+        stock,
+        description,
+        image,
+      }),
     });
   }
 
-  async updateProduct(productId, category, name, price, stock, description) {
+  async updateProduct(
+    productId,
+    category,
+    name,
+    price,
+    stock,
+    description,
+    image
+  ) {
     return this.http.fetch(`/product/${productId}`, {
       method: 'PUT',
       headers: this.getHeaders(),
-      body: JSON.stringify({ category, name, price, stock, description }),
+      body: JSON.stringify({
+        category,
+        name,
+        price,
+        stock,
+        description,
+        image,
+      }),
     });
   }
 
