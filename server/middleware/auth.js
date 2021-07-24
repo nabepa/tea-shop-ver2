@@ -7,7 +7,7 @@ const AUTH_ERROR = { message: 'Authentication Error' };
 export const isAuth = async (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!(authHeader && authHeader.startsWith('Bearer '))) {
-    return res.staus(401).json({ message: 'Invalid authorization header' });
+    return res.status(400).json({ message: 'Invalid authorization header' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -20,6 +20,7 @@ export const isAuth = async (req, res, next) => {
       return res.status(401).json(AUTH_ERROR);
     }
     req.userId = user.id;
+    req.role = user.role;
     req.token = token;
     next();
   });

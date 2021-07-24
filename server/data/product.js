@@ -1,5 +1,5 @@
 import SQ from 'sequelize';
-import { sequelize } from '../db/database';
+import { sequelize } from '../db/database.js';
 import { User } from './auth.js';
 
 const DataTypes = SQ.DataTypes;
@@ -91,11 +91,11 @@ export async function create(
 export async function update(id, category, name, price, stock, description) {
   return Product.findByPk(id, INCLUDE_USER) //
     .then((product) => {
-      product.category = category ?? product.category;
-      product.name = name ?? product.name;
-      product.price = price ?? product.price;
-      product.stock = stock ?? product.stock;
-      product.description = description ?? product.description;
+      product.category = category;
+      product.name = name;
+      product.price = price;
+      product.stock = stock;
+      product.description = description;
       return product.save();
     });
 }

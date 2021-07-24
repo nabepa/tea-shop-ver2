@@ -14,31 +14,41 @@ export async function getProduct(req, res) {
   if (product) {
     res.status(200).json(product);
   } else {
-    res.status(404).json({ message: `Product id(${id}) not found` });
+    res.status(404).json({ message: `Product id(${id}) not found.` });
   }
 }
 
 export async function createProduct(req, res) {
-  const { category, name, price, stock, description, userId } = req.body;
+  if (!req.role) {
+    return res
+      .status(403)
+      .json({ message: 'You do not have rights to upload product.' });
+  }
+  const { category, name, price, stock, description } = req.body;
   const product = await productRepository.create(
     category,
     name,
     price,
     stock,
     description,
-    userId
+    req.userId
   );
   res.status(201).json(product);
 }
 
 export async function updateProduct(req, res) {
+  if (!req.role) {
+    return res
+      .status(403)
+      .json({ message: 'You do not have rights to upload product.' });
+  }
   const id = req.params.id;
   const product = await productRepository.getById(id);
   if (!product) {
-    return res.status(404).json({ message: `Product id(${id}) not found` });
+    return res.status(404).json({ message: `Product id(${id}) not found.` });
   }
   if (product.userId !== req.userId) {
-    return res.sendStatus(403);
+    return res.status(403).json({ message: 'This is not your product' });
   }
   const { category, name, price, stock, description } = req.body;
   const updated = await productRepository.update(
@@ -53,13 +63,18 @@ export async function updateProduct(req, res) {
 }
 
 export async function removeProduct(req, res) {
+  if (!req.role) {
+    return res
+      .status(403)
+      .json({ message: 'You do not have rights to upload product.' });
+  }
   const id = req.params.id;
   const product = await productRepository.getById(id);
   if (!product) {
-    return res.status(404).json({ message: `Product id(${id}) not found` });
+    return res.status(404).json({ message: `Product id(${id}) not found.` });
   }
   if (product.userId !== req.userId) {
-    return res.sendStatus(403);
+    return res.status(403).json({ message: 'This is not your product' });
   }
   await productRepository.remove(id);
   res.sendStatus(204);
