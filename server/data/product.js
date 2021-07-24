@@ -28,7 +28,7 @@ export const Product = sequelize.define('product', {
     allowNull: false,
   },
   description: { type: DataTypes.TEXT, allowNull: false },
-  // image: { type: DataTypes.TEXT, allowNull: false },
+  image: { type: DataTypes.TEXT, allowNull: false },
 });
 Product.belongsTo(User);
 
@@ -40,6 +40,7 @@ const INCLUDE_USER = {
     'price',
     'stock',
     'description',
+    'image',
     'createdAt',
     'userId',
   ],
@@ -82,13 +83,30 @@ export async function create(
   price,
   stock,
   description,
+  image,
   userId
 ) {
-  return Product.create({ category, name, price, stock, description, userId }) //
+  return Product.create({
+    category,
+    name,
+    price,
+    stock,
+    description,
+    image,
+    userId,
+  }) //
     .then((data) => this.getById(data.dataValues.id));
 }
 
-export async function update(id, category, name, price, stock, description) {
+export async function update(
+  id,
+  category,
+  name,
+  price,
+  stock,
+  description,
+  image
+) {
   return Product.findByPk(id, INCLUDE_USER) //
     .then((product) => {
       product.category = category;
@@ -96,6 +114,7 @@ export async function update(id, category, name, price, stock, description) {
       product.price = price;
       product.stock = stock;
       product.description = description;
+      product.image = image;
       return product.save();
     });
 }

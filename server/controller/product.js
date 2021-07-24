@@ -24,13 +24,14 @@ export async function createProduct(req, res) {
       .status(403)
       .json({ message: 'You do not have rights to upload product.' });
   }
-  const { category, name, price, stock, description } = req.body;
+  const { category, name, price, stock, description, image } = req.body;
   const product = await productRepository.create(
     category,
     name,
     price,
     stock,
     description,
+    image,
     req.userId
   );
   res.status(201).json(product);
@@ -50,14 +51,15 @@ export async function updateProduct(req, res) {
   if (product.userId !== req.userId) {
     return res.status(403).json({ message: 'This is not your product' });
   }
-  const { category, name, price, stock, description } = req.body;
+  const { category, name, price, stock, description, image } = req.body;
   const updated = await productRepository.update(
     id,
     category,
     name,
     price,
     stock,
-    description
+    description,
+    image
   );
   res.status(200).json(updated);
 }

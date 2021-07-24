@@ -28,6 +28,9 @@ const validateProduct = [
     .trim()
     .notEmpty()
     .withMessage('Description is missing.'),
+  body('image') //
+    .isURL()
+    .withMessage('Invalid URL.'),
   validate,
 ];
 
