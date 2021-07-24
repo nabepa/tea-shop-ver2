@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { greenTheme } from '../../style/myTheme';
@@ -50,13 +50,12 @@ const UploaderPage = ({ user }) => {
     console.log(data);
   };
 
-  useEffect(() => {
-    if (!user) {
-      history.push('/signin');
-    } else {
-      user.role || history.push('/');
-    }
-  }, [history, user]);
+  if (!user) {
+    history.push('/signin');
+  } else {
+    user.role || history.goBack();
+  }
+
   return (
     <ThemeProvider theme={greenTheme}>
       <Container component='main' maxWidth='xs'>
