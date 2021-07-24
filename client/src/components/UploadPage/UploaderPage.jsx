@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { greenTheme } from '../../style/myTheme';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Typography from '@material-ui/core/Typography';
@@ -38,7 +39,7 @@ const categories = [
   { value: 'herbal', label: 'HERBAL TEA' },
 ];
 
-const UploaderPage = ({ productService, user }) => {
+const UploaderPage = ({ ImageAdd, productService, user }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -47,6 +48,7 @@ const UploaderPage = ({ productService, user }) => {
     formState: { errors },
   } = useForm();
   const [errMessage, setErrMessage] = useState('');
+  const [file, setFile] = useState({ fileName: null, fileURL: null });
 
   const setErr = (err) => {
     setErrMessage(err.message || 'Something went wrong!');
@@ -54,6 +56,10 @@ const UploaderPage = ({ productService, user }) => {
 
   const closePopup = () => {
     setErrMessage('');
+  };
+
+  const changeFile = (file) => {
+    setFile(file);
   };
 
   const onSubmit = async (data) => {
@@ -75,155 +81,169 @@ const UploaderPage = ({ productService, user }) => {
 
   return (
     <ThemeProvider theme={greenTheme}>
-      <Container component='main' maxWidth='xs'>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <CloudUploadIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
-            Upload New Product
-          </Typography>
-          <form
-            className={classes.form}
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
+      <Container component='main' maxWidth='md'>
+        <Grid container spacing={3}>
+          <Grid
+            item
+            container
+            xs={12}
+            sm={6}
+            justifyContent='center'
+            alignItems='center'
           >
-            <TextField
-              id='name'
-              name='name'
-              variant='outlined'
-              label='Product Name'
-              margin='normal'
-              fullWidth
-              required
-              autoFocus
-              {...register('name', {
-                required: 'This field is required.',
-              })}
-            />
-            <Typography
-              className={classes.alert}
-              component='p'
-              variant='caption'
-            >
-              {errors.name?.message}
-            </Typography>
-            <TextField
-              id='category'
-              name='category'
-              variant='outlined'
-              label='Category'
-              margin='normal'
-              defaultValue=''
-              select
-              fullWidth
-              required
-              {...register('category', {
-                required: 'This field is required.',
-              })}
-            >
-              {categories.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <Typography
-              className={classes.alert}
-              component='p'
-              variant='caption'
-            >
-              {errors.category?.message}
-            </Typography>
-            <TextField
-              id='price'
-              name='price'
-              variant='outlined'
-              label='Price [$]'
-              margin='normal'
-              type='number'
-              inputProps={{ min: 0.99 }}
-              fullWidth
-              required
-              {...register('price', {
-                required: 'This field is required.',
-                min: {
-                  value: 0.99,
-                  message: 'Price should be at least $0.99',
-                },
-              })}
-            />
-            <Typography
-              className={classes.alert}
-              component='p'
-              variant='caption'
-            >
-              {errors.price?.message}
-            </Typography>
-            <TextField
-              id='stock'
-              name='stock'
-              variant='outlined'
-              label='Stock [g]'
-              margin='normal'
-              type='number'
-              inputProps={{ min: 0, step: 500 }}
-              fullWidth
-              required
-              {...register('stock', {
-                required: true,
-                validate: (value) => {
-                  const stock = parseInt(value);
-                  if (stock < 0 || stock % 500 !== 0) return false;
-                  else return true;
-                },
-              })}
-            />
-            {errors.stock && (
-              <Typography
-                className={classes.alert}
-                component='p'
-                variant='caption'
-              >
-                Please enter in 500g increments.
+            <ImageAdd url={file.fileURL} changeFile={changeFile} />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <CloudUploadIcon />
+              </Avatar>
+              <Typography component='h1' variant='h5'>
+                Upload New Product
               </Typography>
-            )}
-            <TextField
-              id='description'
-              name='description'
-              variant='outlined'
-              label='Description'
-              margin='normal'
-              multiline
-              fullWidth
-              required
-              {...register('description', {
-                required: 'This field is required.',
-              })}
-            />
-            <Typography
-              className={classes.alert}
-              component='p'
-              variant='caption'
-            >
-              {errors.description?.message}
-            </Typography>
-            <Button
-              className={classes.submit}
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-            >
-              upload
-            </Button>
-            <PopupMessage
-              text={errMessage}
-              isOpen={!!errMessage}
-              onClose={closePopup}
-            />
-          </form>
-        </div>
+              <form
+                className={classes.form}
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+              >
+                <TextField
+                  id='name'
+                  name='name'
+                  variant='outlined'
+                  label='Product Name'
+                  margin='normal'
+                  fullWidth
+                  required
+                  autoFocus
+                  {...register('name', {
+                    required: 'This field is required.',
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.name?.message}
+                </Typography>
+                <TextField
+                  id='category'
+                  name='category'
+                  variant='outlined'
+                  label='Category'
+                  margin='normal'
+                  defaultValue=''
+                  select
+                  fullWidth
+                  required
+                  {...register('category', {
+                    required: 'This field is required.',
+                  })}
+                >
+                  {categories.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.category?.message}
+                </Typography>
+                <TextField
+                  id='price'
+                  name='price'
+                  variant='outlined'
+                  label='Price [$]'
+                  margin='normal'
+                  type='number'
+                  inputProps={{ min: 0.99 }}
+                  fullWidth
+                  required
+                  {...register('price', {
+                    required: 'This field is required.',
+                    min: {
+                      value: 0.99,
+                      message: 'Price should be at least $0.99',
+                    },
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.price?.message}
+                </Typography>
+                <TextField
+                  id='stock'
+                  name='stock'
+                  variant='outlined'
+                  label='Stock [g]'
+                  margin='normal'
+                  type='number'
+                  inputProps={{ min: 0, step: 500 }}
+                  fullWidth
+                  required
+                  {...register('stock', {
+                    required: true,
+                    validate: (value) => {
+                      const stock = parseInt(value);
+                      if (stock < 0 || stock % 500 !== 0) return false;
+                      else return true;
+                    },
+                  })}
+                />
+                {errors.stock && (
+                  <Typography
+                    className={classes.alert}
+                    component='p'
+                    variant='caption'
+                  >
+                    Please enter in 500g increments.
+                  </Typography>
+                )}
+                <TextField
+                  id='description'
+                  name='description'
+                  variant='outlined'
+                  label='Description'
+                  margin='normal'
+                  multiline
+                  fullWidth
+                  required
+                  {...register('description', {
+                    required: 'This field is required.',
+                  })}
+                />
+                <Typography
+                  className={classes.alert}
+                  component='p'
+                  variant='caption'
+                >
+                  {errors.description?.message}
+                </Typography>
+                <Button
+                  className={classes.submit}
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  color='primary'
+                >
+                  upload
+                </Button>
+                <PopupMessage
+                  text={errMessage}
+                  isOpen={!!errMessage}
+                  onClose={closePopup}
+                />
+              </form>
+            </div>
+          </Grid>
+        </Grid>
       </Container>
     </ThemeProvider>
   );
