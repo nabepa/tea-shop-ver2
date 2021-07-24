@@ -15,7 +15,7 @@ const sections = [
   { title: 'HERBAL', path: '/product/herbal' },
 ];
 
-function App() {
+function App({ productService }) {
   const { user, register, signin, signout } = useAuth();
 
   return (
@@ -37,7 +37,7 @@ function App() {
             <RegisterPage user={user} onRegister={register} />
           </Route>
           <Route exact path='/product/upload'>
-            <UploaderPage user={user} />
+            <UploaderPage productService={productService} user={user} />
           </Route>
         </Switch>
       </div>

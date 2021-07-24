@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Todo: handle anchorEl warning
 const PopupMessage = ({ text, isOpen, onClose }) => {
   const classes = useStyles();
   const id = isOpen ? 'simple-popover' : undefined;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { greenTheme } from '../../style/myTheme';
@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import { useForm } from 'react-hook-form';
+import PopupMessage from '../PopupMessage/PopupMessage';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,7 +38,7 @@ const categories = [
   { value: 'herbal', label: 'HERBAL TEA' },
 ];
 
-const UploaderPage = ({ user }) => {
+const UploaderPage = ({ productService, user }) => {
   const history = useHistory();
   const classes = useStyles();
   const {
@@ -45,9 +46,25 @@ const UploaderPage = ({ user }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [errMessage, setErrMessage] = useState('');
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const setErr = (err) => {
+    setErrMessage(err.message || 'Something went wrong!');
+  };
+
+  const closePopup = () => {
+    setErrMessage('');
+  };
+
+  const onSubmit = async (data) => {
+    const { category, name, price, stock, description } = data;
+    productService
+      .postProduct(category, name, price, stock, description)
+      .then(() => {
+        alert('success!');
+        history.push('/');
+      })
+      .catch(setErr);
   };
 
   if (!user) {
@@ -200,6 +217,11 @@ const UploaderPage = ({ user }) => {
             >
               upload
             </Button>
+            <PopupMessage
+              text={errMessage}
+              isOpen={!!errMessage}
+              onClose={closePopup}
+            />
           </form>
         </div>
       </Container>
