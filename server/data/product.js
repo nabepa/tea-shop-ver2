@@ -61,9 +61,9 @@ export async function getAllByCategory(category) {
   return Product.findAll({
     ...INCLUDE_USER,
     ...ORDER_DESC,
+    where: { category },
     include: {
       ...INCLUDE_USER.include,
-      where: { category },
     },
   });
 }
