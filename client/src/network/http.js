@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export default class HttpClient {
-  constructor(baseURL, authErrorEventBus) {
-    this.authErrorEventBus = authErrorEventBus;
+  constructor(baseURL) {
     this.client = axios.create({
       baseURL: baseURL,
       headers: { 'Content-Type': 'application/json' },

@@ -11,7 +11,6 @@ import App from './App';
 const baseURL = process.env.REACT_APP_BASE_URL;
 const tokenStorage = new TokenStorage();
 const authErrorEventBus = new AuthErrorEventBus();
-// Todo: authErrorEventBus 넣을 필요 있나...? 오히려 넣으면 service 별로 client도 따로 만들어야함
 const httpClient = new HttpClient(baseURL, authErrorEventBus);
 const authService = new AuthService(httpClient, tokenStorage);
 
