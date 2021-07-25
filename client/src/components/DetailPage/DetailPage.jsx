@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useForm } from 'react-hook-form';
 
 const useStyles = makeStyles((theme) => ({
-  test: {
+  detailBox: {
     marginTop: '1.2em',
   },
   productName: {
@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
   },
   alert: {
     color: theme.palette.error.dark,
+  },
+  loading: {
+    display: 'flex',
+    minHeight: '50vh',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '1em',
   },
 }));
 
@@ -70,7 +77,7 @@ const DetailPage = ({ productService }) => {
         {product && (
           <Grid container>
             <Grid
-              className={classes.test}
+              className={classes.detailBox}
               item
               xs={12}
               sm={6}
@@ -80,7 +87,7 @@ const DetailPage = ({ productService }) => {
               <img src={product.image} width='80%' alt={product.name} />
             </Grid>
             <Grid
-              className={classes.test}
+              className={classes.detailBox}
               item
               xs={12}
               sm={6}
@@ -161,7 +168,11 @@ const DetailPage = ({ productService }) => {
             </Grid>
           </Grid>
         )}
-        {!product && <CircularProgress size='4rem' />}
+        {!product && (
+          <div className={classes.loading}>
+            <CircularProgress size='4rem' />
+          </div>
+        )}
       </Container>
     </ThemeProvider>
   );
