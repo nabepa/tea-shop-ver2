@@ -68,7 +68,7 @@ const UploaderPage = ({ ImageAdd, productService, user }) => {
       .postProduct(category, name, price, stock, description, file.fileURL)
       .then(() => {
         alert('success!');
-        history.push('/');
+        history.goBack();
       })
       .catch(setErr);
   };

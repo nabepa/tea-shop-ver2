@@ -5,7 +5,7 @@ export default class ProductService {
   }
 
   async getProducts(category) {
-    const query = category ? `?product?category=${category}` : '';
+    const query = category ? `?category=${category}` : '';
     return this.http.fetch(`/product${query}`, {
       method: 'GET',
       headers: this.getHeaders(),
