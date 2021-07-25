@@ -4,7 +4,7 @@ import React from 'react';
 const CopyRight = () => (
   <Box mt={5}>
     <Typography variant='body2' color='textSecondary' align='center'>
-      {`Copyright © Your Website ${new Date().getFullYear()}.`}
+      {`Copyright © Nabepa ${new Date().getFullYear()}.`}
     </Typography>
   </Box>
 );

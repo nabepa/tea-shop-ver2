@@ -25,7 +25,7 @@ const ProductPage = ({ category, bannerInfo, productService }) => {
       <Container>
         <Grid container spacing={3} style={{ marginTop: '1em' }}>
           {products.map((product) => (
-            <Grid item xs={12} sm={4} md={3}>
+            <Grid key={product.id} item xs={12} sm={4} md={3}>
               <ProductCard product={product} />
             </Grid>
           ))}

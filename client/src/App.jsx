@@ -1,4 +1,3 @@
-import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import SigninPage from './components/SigninPage/SigninPage';
@@ -9,6 +8,7 @@ import { useAuth } from './context/AuthContext';
 import Header from './components/Header/Header';
 import ProductPage from './components/ProductPage/ProductPage';
 import { bannerInfo } from './info/bannerInfo';
+import DetailPage from './components/DetailPage/DetailPage';
 
 const sections = [
   { title: 'HOME', path: '/' },
@@ -58,6 +58,9 @@ function App({ ImageAdd, productService }) {
               bannerInfo={bannerInfo.herbal}
               productService={productService}
             />
+          </Route>
+          <Route path='/product/detail/:id'>
+            <DetailPage productService={productService} />
           </Route>
           <Route exact path='/signin'>
             <SigninPage user={user} onSignin={signin} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { greenTheme } from '../../style/myTheme';
 import Card from '@material-ui/core/Card';
@@ -28,15 +29,19 @@ const useStyles = makeStyles({
 
 const ProductCard = ({ product }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const showDetail = () => {
+    product && history.push(`/product/detail/${product.id}`);
+  };
 
   return (
     <ThemeProvider theme={greenTheme}>
       <Card className={classes.root}>
-        <CardActionArea>
+        <CardActionArea onClick={showDetail}>
           <CardMedia
             className={classes.media}
             image={product && product.image}
-            title='Contemplative Reptile'
           />
           <CardContent>
             <Typography

@@ -4,11 +4,22 @@ export default class ProductService {
     this.tokenStorage = tokenStorage;
   }
 
+  async getProduct(id) {
+    // Todo: id가 없는 상황은 어디서 에러 핸들을 하는게 좋은걸까
+    if (!id) {
+      console.error(
+        'You are using getProduct function without id. It will return multiple products.'
+      );
+    }
+    return this.http.fetch(`/product/${id}`, {
+      method: 'GET',
+    });
+  }
+
   async getProducts(category) {
     const query = category ? `?category=${category}` : '';
     return this.http.fetch(`/product${query}`, {
       method: 'GET',
-      headers: this.getHeaders(),
     });
   }
 
