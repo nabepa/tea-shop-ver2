@@ -36,7 +36,7 @@ const DetailPage = ({ productService }) => {
   const classes = useStyles();
   const { id } = useParams();
   const [product, setProduct] = useState(undefined);
-  const [amount, setAmount] = useState(0);
+  const [fee, setFee] = useState(0);
   const {
     register,
     handleSubmit,
@@ -51,14 +51,14 @@ const DetailPage = ({ productService }) => {
     fetchData();
   }, [id, productService]);
 
-  const calcAmount = (quantity) => {
-    const quantityNum = parseInt(quantity);
-    if (quantityNum === 0) {
-      setAmount(0);
-    } else if (!quantityNum || quantityNum < 0 || quantityNum % 500 !== 0) {
+  const calcFee = (amount) => {
+    const amountNum = parseInt(amount);
+    if (amountNum === 0) {
+      setFee(0);
+    } else if (!amountNum || amountNum < 0 || amountNum % 500 !== 0) {
       return;
     } else {
-      setAmount((quantityNum / 500) * product.price);
+      setFee((amountNum / 500) * product.price);
     }
   };
 
@@ -108,27 +108,27 @@ const DetailPage = ({ productService }) => {
                   noValidate
                 >
                   <TextField
-                    id='quantity'
-                    name='quantity'
+                    id='amount'
+                    name='amount'
                     variant='outlined'
-                    label='Quantity [g]'
+                    label='Amount [g]'
                     margin='normal'
                     type='number'
                     inputProps={{ min: 0, step: 500 }}
                     required
-                    {...register('quantity', {
+                    {...register('amount', {
                       required: true,
                       validate: (value) => {
-                        const quantity = parseInt(value);
-                        if (quantity < 0 || quantity % 500 !== 0) return false;
+                        const amount = parseInt(value);
+                        if (amount < 0 || amount % 500 !== 0) return false;
                         else return true;
                       },
                     })}
                     onChange={(event) => {
-                      calcAmount(event.target.value);
+                      calcFee(event.target.value);
                     }}
                   />
-                  {errors.quantity && (
+                  {errors.amount && (
                     <Typography
                       className={classes.alert}
                       component='p'
@@ -137,7 +137,7 @@ const DetailPage = ({ productService }) => {
                       Please enter in 500g increments.
                     </Typography>
                   )}
-                  <Typography>${amount}</Typography>
+                  <Typography>${fee}</Typography>
                   <Grid className={classes.buttons}>
                     <Button
                       className={classes.button}
