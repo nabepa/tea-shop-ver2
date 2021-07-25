@@ -34,9 +34,9 @@ const validateProduct = [
   validate,
 ];
 
-router.get('/', isAuth, productController.getProducts);
+router.get('/', productController.getProducts);
 
-router.get('/:id', isAuth, productController.getProduct);
+router.get('/:id', productController.getProduct);
 
 router.post('/', isAuth, validateProduct, productController.createProduct);
 
