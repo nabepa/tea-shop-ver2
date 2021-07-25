@@ -36,7 +36,7 @@ const DetailPage = ({ productService }) => {
   const classes = useStyles();
   const { id } = useParams();
   const [product, setProduct] = useState(undefined);
-  const [fee, setFee] = useState(0);
+  const [charge, setCharge] = useState(0);
   const {
     register,
     handleSubmit,
@@ -51,14 +51,14 @@ const DetailPage = ({ productService }) => {
     fetchData();
   }, [id, productService]);
 
-  const calcFee = (amount) => {
+  const calcCharge = (amount) => {
     const amountNum = parseInt(amount);
     if (amountNum === 0) {
-      setFee(0);
+      setCharge(0);
     } else if (!amountNum || amountNum < 0 || amountNum % 500 !== 0) {
       return;
     } else {
-      setFee((amountNum / 500) * product.price);
+      setCharge((amountNum / 500) * product.price);
     }
   };
 
@@ -125,7 +125,7 @@ const DetailPage = ({ productService }) => {
                       },
                     })}
                     onChange={(event) => {
-                      calcFee(event.target.value);
+                      calcCharge(event.target.value);
                     }}
                   />
                   {errors.amount && (
@@ -137,7 +137,7 @@ const DetailPage = ({ productService }) => {
                       Please enter in 500g increments.
                     </Typography>
                   )}
-                  <Typography>${fee}</Typography>
+                  <Typography>${charge}</Typography>
                   <Grid className={classes.buttons}>
                     <Button
                       className={classes.button}
