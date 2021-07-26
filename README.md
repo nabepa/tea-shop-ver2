@@ -21,13 +21,24 @@ You can try this app, click below badge!
 ### 実装済み 🙆🏻‍♀️
 
 - 会員登録とログイン
+<p>
   <img src="image/register.png" height="250">
+</p>
+
 - 商品登録(管理者アカウントのみ)
+<p>
   <img src="image/upload.png" height="250">
+</p>
+
 - カテゴリ別商品閲覧
+<p>
   <img src="image/category.png" height="250">
+</p>
+
 - 商品詳細情報閲覧
+<p>
   <img src="image/detail.png" width="340">
+</p>
 
 ### 開発中 🙅🏻
 
