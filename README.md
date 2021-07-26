@@ -55,6 +55,7 @@ You can try this app, click below badge!
 - [axios]() : データ fetch 用
 - [react-router-dom]() : page routing
 - [react-hook-form]() : form 提出データの有効性検査
+- [Netlify]() : Client side 配布
 
 ### Server side
 
@@ -63,11 +64,10 @@ You can try this app, click below badge!
 - [sequelize]() : Postgres のための ORM
 - [dotenv]() : configuration 設定
 - [postman]() : サーバー動作確認用
+- [Heroku]() : Server side 配布
 
 ### その他
 
-- [Netlify]() : Client side 配布
-- [Heroku]() : Server side 配布
 - [Cloudinary]() : 写真保存用の cloud service
 
 ## 📖 Project で新しく勉強した事
