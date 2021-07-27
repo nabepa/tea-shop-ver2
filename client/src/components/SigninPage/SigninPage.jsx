@@ -126,7 +126,7 @@ const SigninPage = ({ user, onSignin }) => {
                 pattern: {
                   value: passwordRegExp,
                   message:
-                    'Password should be at least 6 and no more than 14 characters.',
+                    'Password should be at least 6 and no more than 14 characters(alphabet, number, !, @, #, $, %).',
                 },
               })}
             />
