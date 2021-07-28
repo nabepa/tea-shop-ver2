@@ -1,11 +1,12 @@
 import { Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import SigninPage from './components/SigninPage/SigninPage';
-import RegisterPage from './components/RegisterPage/RegisterPage';
-import UploaderPage from './components/UploadPage/UploaderPage';
-import CopyRight from './components/CopyRight/CopyRight';
 import { useAuth } from './context/AuthContext';
 import Header from './components/Header/Header';
+import CopyRight from './components/CopyRight/CopyRight';
+import RegisterPage from './components/RegisterPage/RegisterPage';
+import SigninPage from './components/SigninPage/SigninPage';
+import UploadPage from './components/UploadPage/UploadPage';
+import ManagePage from './components/ManagePage/ManagePage';
 import ProductPage from './components/ProductPage/ProductPage';
 import { bannerInfo } from './info/bannerInfo';
 import DetailPage from './components/DetailPage/DetailPage';
@@ -69,11 +70,14 @@ function App({ ImageAdd, productService }) {
             <RegisterPage user={user} onRegister={register} />
           </Route>
           <Route exact path='/product/upload'>
-            <UploaderPage
+            <UploadPage
               ImageAdd={ImageAdd}
               productService={productService}
               user={user}
             />
+          </Route>
+          <Route exact path='/product/manage'>
+            <ManagePage />
           </Route>
         </Switch>
       </div>
