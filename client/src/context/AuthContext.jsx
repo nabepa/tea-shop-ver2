@@ -11,12 +11,12 @@ import React, {
 
 const AuthContext = createContext({});
 
-const contextRef = createRef();
+const tokenRef = createRef();
 
 export function AuthProvider({ authService, authErrorEventBus, children }) {
   const [user, setUser] = useState(undefined);
 
-  useImperativeHandle(contextRef, () => (user ? user.token : undefined));
+  useImperativeHandle(tokenRef, () => (user ? user.token : undefined));
 
   useEffect(() => {
     authErrorEventBus.listen((error) => {
@@ -73,5 +73,5 @@ export class AuthErrorEventBus {
 }
 
 export default AuthContext;
-export const fetchToken = () => contextRef.current;
+export const fetchToken = () => tokenRef.current;
 export const useAuth = () => useContext(AuthContext);

@@ -10,7 +10,13 @@ export default class HttpClient {
 
   async fetch(url, options) {
     const { method, body, headers } = options;
-    const req = { url, method, headers: { ...headers }, data: body };
+    const req = {
+      url,
+      method,
+      headers: { ...headers },
+      credentials: 'include',
+      data: body,
+    };
 
     try {
       const res = await this.client(req);

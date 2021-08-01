@@ -18,6 +18,7 @@ export async function register(req, res) {
     lastName,
   });
   const token = await createJwtToken(userId);
+  setToken(res, token);
   res.status(201).json({ token, email, role: 0 });
 }
 
@@ -32,6 +33,7 @@ export async function signin(req, res) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
   const token = createJwtToken(found.id);
+  setToken(res, token);
   res.status(200).json({ token, email, role: found.role });
 }
 
@@ -39,6 +41,16 @@ function createJwtToken(id) {
   return jwt.sign({ id }, config.jwt.secretKey, {
     expiresIn: config.jwt.expiresInSec,
   });
+}
+
+function setToken(res, token) {
+  const options = {
+    maxAge: config.jwt.expiresInSec * 1000,
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  };
+  res.cookie('token', token, options); // HTTP-ONLY cookie
 }
 
 export async function me(req, res) {

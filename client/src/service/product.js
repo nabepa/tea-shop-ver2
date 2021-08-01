@@ -1,7 +1,6 @@
 export default class ProductService {
-  constructor(http, tokenStorage) {
+  constructor(http) {
     this.http = http;
-    this.tokenStorage = tokenStorage;
   }
 
   async getProduct(id) {
@@ -26,7 +25,6 @@ export default class ProductService {
   async postProduct(category, name, price, stock, description, image) {
     return this.http.fetch(`/product`, {
       method: 'POST',
-      headers: this.getHeaders(),
       body: JSON.stringify({
         category,
         name,
@@ -49,7 +47,6 @@ export default class ProductService {
   ) {
     return this.http.fetch(`/product/${productId}`, {
       method: 'PUT',
-      headers: this.getHeaders(),
       body: JSON.stringify({
         category,
         name,
@@ -64,14 +61,6 @@ export default class ProductService {
   async deleteProduct(productId) {
     return this.http.fetch(`/product/${productId}`, {
       method: 'DELETE',
-      headers: this.getHeaders(),
     });
-  }
-
-  getHeaders() {
-    const token = this.tokenStorage.getToken();
-    return {
-      Authorization: `Bearer ${token}`,
-    };
   }
 }

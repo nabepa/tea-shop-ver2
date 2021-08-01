@@ -5,12 +5,22 @@ import * as userRepository from '../data/auth.js';
 const AUTH_ERROR = { message: 'Authentication Error' };
 
 export const isAuth = async (req, res, next) => {
+  let token;
+  // check Header (for Non-Browser Client)
   const authHeader = req.get('Authorization');
-  if (!(authHeader && authHeader.startsWith('Bearer '))) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  }
+
+  // if no token in the header, check Cookie (for Browser)
+  if (!token) {
+    token = req.cookies['token'];
+  }
+
+  if (!token) {
     return res.status(400).json({ message: 'Invalid authorization header' });
   }
 
-  const token = authHeader.split(' ')[1];
   jwt.verify(token, config.jwt.secretKey, async (err, decoded) => {
     if (err) {
       return res.status(401).json(AUTH_ERROR);
