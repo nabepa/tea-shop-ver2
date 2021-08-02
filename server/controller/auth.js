@@ -37,6 +37,11 @@ export async function signin(req, res) {
   res.status(200).json({ token, email, role: found.role });
 }
 
+export async function signout(req, res) {
+  res.cookie('token', '');
+  res.status(200).json({ message: 'User has been logged out' });
+}
+
 function createJwtToken(id) {
   return jwt.sign({ id }, config.jwt.secretKey, {
     expiresIn: config.jwt.expiresInSec,

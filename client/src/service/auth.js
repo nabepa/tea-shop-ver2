@@ -24,6 +24,8 @@ export default class AuthService {
   }
 
   async signout() {
-    // TODO: nabepa
+    return this.http.fetch('/auth/signout', {
+      method: 'POST',
+    });
   }
 }
